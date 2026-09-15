@@ -1,0 +1,755 @@
+[
+  {
+    "id": "image-deepseek-flux-lora",
+    "title": "图生图 · DeepSeek × FLUX × LoRA",
+    "description": "以输入图像为起点，结合 DeepSeek 提示词处理、FLUX 与 LoRA，通过采样、解码及 Ultimate SD Upscale 完成图像生成与放大。 下载版本已清空 API 密钥，使用时请填入自己的密钥并配置对应模型与插件。",
+    "file": "/workflows/image-deepseek-flux-lora.json",
+    "preview": null,
+    "createdAt": "2026-09-15T10:39:27.455Z",
+    "nodes": [
+      {
+        "id": "2",
+        "type": "UNETLoader",
+        "label": "UNETLoader",
+        "x": -1747.137939453125,
+        "y": 200.87510681152344,
+        "inputs": [],
+        "outputs": [
+          "MODEL"
+        ]
+      },
+      {
+        "id": "3",
+        "type": "DualCLIPLoader",
+        "label": "DualCLIPLoader",
+        "x": -1746.684814453125,
+        "y": 342.79034423828125,
+        "inputs": [],
+        "outputs": [
+          "CLIP"
+        ]
+      },
+      {
+        "id": "14",
+        "type": "LoraLoader",
+        "label": "LoraLoader",
+        "x": -1347.3861083984375,
+        "y": 218.9286651611328,
+        "inputs": [
+          "model",
+          "clip"
+        ],
+        "outputs": [
+          "MODEL",
+          "CLIP"
+        ]
+      },
+      {
+        "id": "27",
+        "type": "SetNode",
+        "label": "SetNode",
+        "x": -536.7869873046875,
+        "y": 134.8724822998047,
+        "inputs": [
+          "STRING"
+        ],
+        "outputs": [
+          "STRING"
+        ]
+      },
+      {
+        "id": "28",
+        "type": "CLIPTextEncode",
+        "label": "CLIPTextEncode",
+        "x": -152.0693359375,
+        "y": 145.37281799316406,
+        "inputs": [
+          "clip",
+          "text"
+        ],
+        "outputs": [
+          "CONDITIONING"
+        ]
+      },
+      {
+        "id": "8",
+        "type": "ConditioningZeroOut",
+        "label": "ConditioningZeroOut",
+        "x": -138.41336059570312,
+        "y": 316.53753662109375,
+        "inputs": [
+          "conditioning"
+        ],
+        "outputs": [
+          "CONDITIONING"
+        ]
+      },
+      {
+        "id": "10",
+        "type": "VAEDecode",
+        "label": "VAEDecode",
+        "x": 742.5709838867188,
+        "y": 123.10270690917969,
+        "inputs": [
+          "samples",
+          "vae"
+        ],
+        "outputs": [
+          "IMAGE"
+        ]
+      },
+      {
+        "id": "26",
+        "type": "easy promptReplace",
+        "label": "easy promptReplace",
+        "x": -431.6012268066406,
+        "y": 424.65576171875,
+        "inputs": [
+          "prompt"
+        ],
+        "outputs": [
+          "prompt"
+        ]
+      },
+      {
+        "id": "13",
+        "type": "SaveImage",
+        "label": "SaveImage",
+        "x": 1605.1878662109375,
+        "y": 494.46368408203125,
+        "inputs": [
+          "images"
+        ],
+        "outputs": []
+      },
+      {
+        "id": "15",
+        "type": "UpscaleModelLoader",
+        "label": "UpscaleModelLoader",
+        "x": -532.719482421875,
+        "y": 795.334716796875,
+        "inputs": [],
+        "outputs": [
+          "UPSCALE_MODEL"
+        ]
+      },
+      {
+        "id": "23",
+        "type": "PreviewImage",
+        "label": "PreviewImage",
+        "x": 339.090087890625,
+        "y": 958.3064575195312,
+        "inputs": [
+          "images"
+        ],
+        "outputs": []
+      },
+      {
+        "id": "20",
+        "type": "SaveImage",
+        "label": "SaveImage",
+        "x": 302.5321044921875,
+        "y": 1257.312744140625,
+        "inputs": [
+          "images"
+        ],
+        "outputs": []
+      },
+      {
+        "id": "25",
+        "type": "ShowText|pysssss",
+        "label": "ShowText|pysssss",
+        "x": -973.0150146484375,
+        "y": 435.1443176269531,
+        "inputs": [
+          "text"
+        ],
+        "outputs": [
+          "STRING"
+        ]
+      },
+      {
+        "id": "22",
+        "type": "UltimateSDUpscale",
+        "label": "UltimateSDUpscale",
+        "x": -104.90454864501953,
+        "y": 615.5651245117188,
+        "inputs": [
+          "image",
+          "model",
+          "positive",
+          "negative",
+          "vae",
+          "upscale_model"
+        ],
+        "outputs": [
+          "IMAGE"
+        ]
+      },
+      {
+        "id": "19",
+        "type": "SaveImage",
+        "label": "SaveImage",
+        "x": 283.9058837890625,
+        "y": 616.519775390625,
+        "inputs": [
+          "images"
+        ],
+        "outputs": []
+      },
+      {
+        "id": "31",
+        "type": "VAEEncode",
+        "label": "VAEEncode",
+        "x": -2279.384521484375,
+        "y": 489.0733642578125,
+        "inputs": [
+          "pixels",
+          "vae"
+        ],
+        "outputs": [
+          "LATENT"
+        ]
+      },
+      {
+        "id": "11",
+        "type": "VAELoader",
+        "label": "VAELoader",
+        "x": 669.6993408203125,
+        "y": 278.2644958496094,
+        "inputs": [],
+        "outputs": [
+          "VAE"
+        ]
+      },
+      {
+        "id": "12",
+        "type": "PreviewImage",
+        "label": "PreviewImage",
+        "x": 764.15869140625,
+        "y": 453.2450866699219,
+        "inputs": [
+          "images"
+        ],
+        "outputs": []
+      },
+      {
+        "id": "1",
+        "type": "KSampler",
+        "label": "KSampler",
+        "x": 277.44464111328125,
+        "y": 72.05754089355469,
+        "inputs": [
+          "model",
+          "positive",
+          "negative",
+          "latent_image"
+        ],
+        "outputs": [
+          "LATENT"
+        ]
+      },
+      {
+        "id": "24",
+        "type": "mini_flux_prompt",
+        "label": "FLUX+DeepSeek提示词生成器",
+        "x": -979.1143188476562,
+        "y": 90.9747085571289,
+        "inputs": [],
+        "outputs": [
+          "flux_prompt"
+        ]
+      },
+      {
+        "id": "29",
+        "type": "LoadImage",
+        "label": "LoadImage",
+        "x": -2312.397216796875,
+        "y": 55.94627380371094,
+        "inputs": [],
+        "outputs": [
+          "IMAGE",
+          "MASK"
+        ]
+      }
+    ],
+    "links": [
+      {
+        "from": "8",
+        "to": "1"
+      },
+      {
+        "from": "1",
+        "to": "10"
+      },
+      {
+        "from": "11",
+        "to": "10"
+      },
+      {
+        "from": "10",
+        "to": "12"
+      },
+      {
+        "from": "10",
+        "to": "13"
+      },
+      {
+        "from": "2",
+        "to": "14"
+      },
+      {
+        "from": "14",
+        "to": "1"
+      },
+      {
+        "from": "3",
+        "to": "14"
+      },
+      {
+        "from": "10",
+        "to": "22"
+      },
+      {
+        "from": "2",
+        "to": "22"
+      },
+      {
+        "from": "8",
+        "to": "22"
+      },
+      {
+        "from": "11",
+        "to": "22"
+      },
+      {
+        "from": "22",
+        "to": "19"
+      },
+      {
+        "from": "22",
+        "to": "20"
+      },
+      {
+        "from": "22",
+        "to": "23"
+      },
+      {
+        "from": "15",
+        "to": "22"
+      },
+      {
+        "from": "24",
+        "to": "25"
+      },
+      {
+        "from": "25",
+        "to": "26"
+      },
+      {
+        "from": "26",
+        "to": "27"
+      },
+      {
+        "from": "27",
+        "to": "28"
+      },
+      {
+        "from": "14",
+        "to": "28"
+      },
+      {
+        "from": "28",
+        "to": "1"
+      },
+      {
+        "from": "28",
+        "to": "8"
+      },
+      {
+        "from": "28",
+        "to": "22"
+      },
+      {
+        "from": "29",
+        "to": "31"
+      },
+      {
+        "from": "31",
+        "to": "1"
+      },
+      {
+        "from": "11",
+        "to": "31"
+      }
+    ],
+    "nodeCount": 21,
+    "linkCount": 27,
+    "format": "ComfyUI Workflow"
+  },
+  {
+    "id": "text-deepseek-flux-lora",
+    "title": "文生图 · DeepSeek × FLUX × LoRA",
+    "description": "从文本需求出发，经过提示词处理、FLUX 与 LoRA 生成，再通过 Ultimate SD Upscale 放大并保存图像。 下载版本已清空 API 密钥，使用时请填入自己的密钥并配置对应模型与插件。",
+    "file": "/workflows/text-deepseek-flux-lora.json",
+    "preview": null,
+    "createdAt": "2026-09-15T10:39:27.472Z",
+    "nodes": [
+      {
+        "id": "19",
+        "type": "SaveImage",
+        "label": "SaveImage",
+        "x": 310.3844299316406,
+        "y": 770.8718872070312,
+        "inputs": [
+          "images"
+        ],
+        "outputs": []
+      },
+      {
+        "id": "20",
+        "type": "SaveImage",
+        "label": "SaveImage",
+        "x": 424.980712890625,
+        "y": 1542.7738037109375,
+        "inputs": [
+          "images"
+        ],
+        "outputs": []
+      },
+      {
+        "id": "23",
+        "type": "PreviewImage",
+        "label": "PreviewImage",
+        "x": 413.76019287109375,
+        "y": 1222.41943359375,
+        "inputs": [
+          "images"
+        ],
+        "outputs": []
+      },
+      {
+        "id": "5",
+        "type": "EmptyLatentImage",
+        "label": "EmptyLatentImage",
+        "x": 1002.67236328125,
+        "y": 818.16357421875,
+        "inputs": [],
+        "outputs": [
+          "LATENT"
+        ]
+      },
+      {
+        "id": "15",
+        "type": "UpscaleModelLoader",
+        "label": "UpscaleModelLoader",
+        "x": -519.3861694335938,
+        "y": 1064.00146484375,
+        "inputs": [],
+        "outputs": [
+          "UPSCALE_MODEL"
+        ]
+      },
+      {
+        "id": "2",
+        "type": "UNETLoader",
+        "label": "UNETLoader",
+        "x": -1747.137939453125,
+        "y": 200.87510681152344,
+        "inputs": [],
+        "outputs": [
+          "MODEL"
+        ]
+      },
+      {
+        "id": "3",
+        "type": "DualCLIPLoader",
+        "label": "DualCLIPLoader",
+        "x": -1746.684814453125,
+        "y": 342.79034423828125,
+        "inputs": [],
+        "outputs": [
+          "CLIP"
+        ]
+      },
+      {
+        "id": "14",
+        "type": "LoraLoader",
+        "label": "LoraLoader",
+        "x": -1347.3861083984375,
+        "y": 218.9286651611328,
+        "inputs": [
+          "model",
+          "clip"
+        ],
+        "outputs": [
+          "MODEL",
+          "CLIP"
+        ]
+      },
+      {
+        "id": "27",
+        "type": "SetNode",
+        "label": "SetNode",
+        "x": -536.7869873046875,
+        "y": 134.8724822998047,
+        "inputs": [
+          "STRING"
+        ],
+        "outputs": [
+          "STRING"
+        ]
+      },
+      {
+        "id": "28",
+        "type": "CLIPTextEncode",
+        "label": "CLIPTextEncode",
+        "x": -152.0693359375,
+        "y": 145.37281799316406,
+        "inputs": [
+          "clip",
+          "text"
+        ],
+        "outputs": [
+          "CONDITIONING"
+        ]
+      },
+      {
+        "id": "22",
+        "type": "UltimateSDUpscale",
+        "label": "UltimateSDUpscale",
+        "x": -164.34043884277344,
+        "y": 957.4931640625,
+        "inputs": [
+          "image",
+          "model",
+          "positive",
+          "negative",
+          "vae",
+          "upscale_model"
+        ],
+        "outputs": [
+          "IMAGE"
+        ]
+      },
+      {
+        "id": "8",
+        "type": "ConditioningZeroOut",
+        "label": "ConditioningZeroOut",
+        "x": -138.41336059570312,
+        "y": 316.53753662109375,
+        "inputs": [
+          "conditioning"
+        ],
+        "outputs": [
+          "CONDITIONING"
+        ]
+      },
+      {
+        "id": "1",
+        "type": "KSampler",
+        "label": "KSampler",
+        "x": 277.44464111328125,
+        "y": 72.05754089355469,
+        "inputs": [
+          "model",
+          "positive",
+          "negative",
+          "latent_image"
+        ],
+        "outputs": [
+          "LATENT"
+        ]
+      },
+      {
+        "id": "10",
+        "type": "VAEDecode",
+        "label": "VAEDecode",
+        "x": 742.5709838867188,
+        "y": 123.10270690917969,
+        "inputs": [
+          "samples",
+          "vae"
+        ],
+        "outputs": [
+          "IMAGE"
+        ]
+      },
+      {
+        "id": "11",
+        "type": "VAELoader",
+        "label": "VAELoader",
+        "x": 777.6248168945312,
+        "y": 270.9140930175781,
+        "inputs": [],
+        "outputs": [
+          "VAE"
+        ]
+      },
+      {
+        "id": "12",
+        "type": "PreviewImage",
+        "label": "PreviewImage",
+        "x": 866.6456298828125,
+        "y": 403.9980773925781,
+        "inputs": [
+          "images"
+        ],
+        "outputs": []
+      },
+      {
+        "id": "13",
+        "type": "SaveImage",
+        "label": "SaveImage",
+        "x": 1291.8896484375,
+        "y": 406.5598449707031,
+        "inputs": [
+          "images"
+        ],
+        "outputs": []
+      },
+      {
+        "id": "24",
+        "type": "mini_flux_prompt",
+        "label": "FLUX+DeepSeek提示词生成器",
+        "x": -979.1143188476562,
+        "y": 90.9747085571289,
+        "inputs": [],
+        "outputs": [
+          "flux_prompt"
+        ]
+      },
+      {
+        "id": "25",
+        "type": "ShowText|pysssss",
+        "label": "ShowText|pysssss",
+        "x": -973.0150146484375,
+        "y": 435.1443176269531,
+        "inputs": [
+          "text"
+        ],
+        "outputs": [
+          "STRING"
+        ]
+      },
+      {
+        "id": "26",
+        "type": "easy promptReplace",
+        "label": "easy promptReplace",
+        "x": -431.6012268066406,
+        "y": 424.65576171875,
+        "inputs": [
+          "prompt"
+        ],
+        "outputs": [
+          "prompt"
+        ]
+      }
+    ],
+    "links": [
+      {
+        "from": "8",
+        "to": "1"
+      },
+      {
+        "from": "5",
+        "to": "1"
+      },
+      {
+        "from": "1",
+        "to": "10"
+      },
+      {
+        "from": "11",
+        "to": "10"
+      },
+      {
+        "from": "10",
+        "to": "12"
+      },
+      {
+        "from": "10",
+        "to": "13"
+      },
+      {
+        "from": "2",
+        "to": "14"
+      },
+      {
+        "from": "14",
+        "to": "1"
+      },
+      {
+        "from": "3",
+        "to": "14"
+      },
+      {
+        "from": "10",
+        "to": "22"
+      },
+      {
+        "from": "2",
+        "to": "22"
+      },
+      {
+        "from": "8",
+        "to": "22"
+      },
+      {
+        "from": "11",
+        "to": "22"
+      },
+      {
+        "from": "22",
+        "to": "19"
+      },
+      {
+        "from": "22",
+        "to": "20"
+      },
+      {
+        "from": "22",
+        "to": "23"
+      },
+      {
+        "from": "15",
+        "to": "22"
+      },
+      {
+        "from": "24",
+        "to": "25"
+      },
+      {
+        "from": "25",
+        "to": "26"
+      },
+      {
+        "from": "26",
+        "to": "27"
+      },
+      {
+        "from": "27",
+        "to": "28"
+      },
+      {
+        "from": "14",
+        "to": "28"
+      },
+      {
+        "from": "28",
+        "to": "1"
+      },
+      {
+        "from": "28",
+        "to": "8"
+      },
+      {
+        "from": "28",
+        "to": "22"
+      }
+    ],
+    "nodeCount": 20,
+    "linkCount": 25,
+    "format": "ComfyUI Workflow"
+  }
+]

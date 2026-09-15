@@ -1,0 +1,15 @@
+node_modules/
+dist/
+*.log
+.preview-browser/
+preview-*.png
+tmp/
+
+/data/
+output/
+sources/
+verify-*.mjs
+*.mjs
+*.py
+AGENTS.md
+ASSET-NOTES.md
